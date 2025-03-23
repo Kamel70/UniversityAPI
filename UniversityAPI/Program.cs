@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using UniversityAPI.Models;
+
 namespace UniversityAPI
 {
     public class Program
@@ -12,6 +15,10 @@ namespace UniversityAPI
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            builder.Services.AddDbContext<UniversityContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("udb"));
+            });
 
             var app = builder.Build();
 
