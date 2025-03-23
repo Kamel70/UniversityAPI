@@ -1,6 +1,8 @@
 
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using UniversityAPI.Models;
+using UniversityAPI.Repository;
 
 namespace UniversityAPI
 {
@@ -13,12 +15,15 @@ namespace UniversityAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddScoped<IStudentrRepository, StudentRepository>();
             builder.Services.AddDbContext<UniversityContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("udb"));
             });
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
+
 
             var app = builder.Build();
 
@@ -26,6 +31,8 @@ namespace UniversityAPI
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseAuthorization();
