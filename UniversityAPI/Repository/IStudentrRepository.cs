@@ -11,6 +11,7 @@ namespace UniversityAPI.Repository
         public void Add(Student student);
         public void Update(Student student);
         public void Delete(int id);
+        public void Save();
 
     }
 }

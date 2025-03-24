@@ -18,36 +18,56 @@ namespace UniversityAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(IStudentrRepository.GetAll());
+            List<Student> students = IStudentrRepository.GetAll();
+            if (students.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(students);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
         {
-            return Ok(IStudentrRepository.GetById(id));
+            Student studentbyID = IStudentrRepository.GetById(id);
+            if (studentbyID == null)
+            {
+                return NotFound();
+            }
+            return Ok(new {message=$"Student With ID:{id} is Exist",student=studentbyID});
         }
 
         [HttpGet("{name:alpha}")]
         public IActionResult GetByName(string name)
         {
-            return Ok(IStudentrRepository.GetByName(name));
+            Student studentbyName= IStudentrRepository.GetByName(name);
+            if (studentbyName == null)
+            {
+                return NotFound();
+            }
+            return Ok(new { message = $"{name} is Exist", student = studentbyName });
         }
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
             IStudentrRepository.Delete(id);
+            IStudentrRepository.Save();
             return Ok("deleted Successfully");
         }
         [HttpPost]
         public IActionResult Add(Student student)
         {
+            if (student == null) return BadRequest();
             IStudentrRepository.Add(student);
-            return Ok("Added Successfully");
+            IStudentrRepository.Save();
+            return CreatedAtAction(nameof(GetById),new {id=student.Id},new {message="Created Successfully"});
         }
         [HttpPut]
         public IActionResult Update(Student student)
         {
+            if(student == null) return BadRequest();
             IStudentrRepository.Update(student);
+            IStudentrRepository.Save();
             return Ok("Updated Successfully");
         }
 
