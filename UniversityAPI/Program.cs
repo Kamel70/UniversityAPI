@@ -16,6 +16,7 @@ namespace UniversityAPI
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<IStudentrRepository, StudentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddDbContext<UniversityContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("udb"));

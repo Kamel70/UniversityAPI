@@ -4,39 +4,45 @@ namespace UniversityAPI.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
+        UniversityContext universityContext;
+        public DepartmentRepository(UniversityContext _universityContext)
+        {
+            universityContext = _universityContext;
+        }
         public void Add(Department dept)
         {
-            throw new NotImplementedException();
+            universityContext.Departments.Add(dept);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Department dept = GetById(id);
+            universityContext.Departments.Remove(dept);
         }
 
         public List<Department> GetAll()
         {
-            throw new NotImplementedException();
+            return universityContext.Departments.ToList();
         }
 
         public Department GetById(int id)
         {
-            throw new NotImplementedException();
+            return universityContext.Departments.FirstOrDefault(s => s.Id == id);
         }
 
         public Department GetByName(string name)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
+            return universityContext.Departments.FirstOrDefault(s => s.Name == name);
         }
 
         public void Update(Department dept)
         {
-            throw new NotImplementedException();
+            universityContext.Departments.Update(dept);
+        }
+
+        public void Save()
+        {
+            universityContext.SaveChanges();
         }
     }
 }
