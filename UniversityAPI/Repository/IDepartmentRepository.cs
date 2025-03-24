@@ -12,5 +12,6 @@ namespace UniversityAPI.Repository
         public void Update(Department dept);
         public void Delete(int id);
         public void Save();
+        public List<Department> GetAllWithStudents();
     }
 }

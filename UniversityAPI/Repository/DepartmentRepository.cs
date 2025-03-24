@@ -1,4 +1,5 @@
-﻿using UniversityAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityAPI.Models;
 
 namespace UniversityAPI.Repository
 {
@@ -43,6 +44,11 @@ namespace UniversityAPI.Repository
         public void Save()
         {
             universityContext.SaveChanges();
+        }
+
+        public List<Department> GetAllWithStudents()
+        {
+            return universityContext.Departments.Include(d=>d.Students).ToList();
         }
     }
 }

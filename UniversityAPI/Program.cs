@@ -21,6 +21,14 @@ namespace UniversityAPI
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("udb"));
             });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
@@ -35,6 +43,7 @@ namespace UniversityAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
