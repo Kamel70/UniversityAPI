@@ -1,6 +1,7 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using UniversityAPI.Filters;
 using UniversityAPI.Middleware;
 using UniversityAPI.Models;
 using UniversityAPI.Repository;
@@ -12,10 +13,12 @@ namespace UniversityAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddScoped<ResponseHeaderFilter>();
 
             // Add services to the container.
 
             builder.Services.AddControllers();
+            
             builder.Services.AddScoped<IStudentrRepository, StudentRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddDbContext<UniversityContext>(options =>
@@ -44,7 +47,8 @@ namespace UniversityAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseMiddleware<LoggingMiddleware>(); 
+            app.UseMiddleware<LoggingMiddleware>();
+            
             app.UseCors("AllowAll");
 
             app.UseAuthorization();
