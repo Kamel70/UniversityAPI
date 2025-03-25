@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UniversityAPI.DTO;
 using UniversityAPI.Models;
 using UniversityAPI.Repository;
 
@@ -24,6 +25,27 @@ namespace UniversityAPI.Controllers
                 return NotFound();
             }
             return Ok(students);
+        }
+        [HttpGet("stdWithdept")]
+        public IActionResult GetStudentsWithDept()
+        {
+            List<Student> students = IStudentrRepository.GetStudentsWithDept();
+            if (students.Count == 0)
+            {
+                return NotFound();
+            }
+            
+            List<StudentWithDeptNameDTO> data = new List<StudentWithDeptNameDTO>();
+            foreach (var std in students)
+            {
+                StudentWithDeptNameDTO studentWithDeptNameDTO = new StudentWithDeptNameDTO();
+                studentWithDeptNameDTO.Name = std.Name;
+                studentWithDeptNameDTO.DepartmentName = std.Department.Name;
+                studentWithDeptNameDTO.Age = std.Age;
+                studentWithDeptNameDTO.Address = std.Address;
+                data.Add(studentWithDeptNameDTO);
+            }
+            return Ok(data);
         }
 
         [HttpGet("{id:int}")]

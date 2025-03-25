@@ -1,6 +1,7 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using UniversityAPI.Middleware;
 using UniversityAPI.Models;
 using UniversityAPI.Repository;
 
@@ -43,6 +44,7 @@ namespace UniversityAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseMiddleware<LoggingMiddleware>(); 
             app.UseCors("AllowAll");
 
             app.UseAuthorization();

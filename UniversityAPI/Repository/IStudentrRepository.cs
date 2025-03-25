@@ -13,5 +13,7 @@ namespace UniversityAPI.Repository
         public void Delete(int id);
         public void Save();
 
+        public List<Student> GetStudentsWithDept();
+
     }
 }
