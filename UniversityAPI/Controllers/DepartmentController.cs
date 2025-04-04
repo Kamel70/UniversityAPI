@@ -30,7 +30,7 @@ namespace UniversityAPI.Controllers
         [TypeFilter(typeof(ResponseHeaderFilter))]
         public IActionResult GetAllWithStudents()
         {
-            List<Department> departments = baseRepository.GetStudentsWithDept("Students");
+            List<Department> departments = baseRepository.GetDeptsWithStudents("Students");
             if (departments.Count == 0)
             {
                 return NotFound();

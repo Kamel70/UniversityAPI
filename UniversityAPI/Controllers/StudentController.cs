@@ -10,16 +10,16 @@ namespace UniversityAPI.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        IStudentrRepository IStudentrRepository;
-        public StudentController(IStudentrRepository _IStudentrRepository)
+        IBaseRepository<Student> baseRepository;
+        public StudentController(IBaseRepository<Student> _baseRepository)
         {
-            IStudentrRepository = _IStudentrRepository;
+            baseRepository = _baseRepository;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Student> students = IStudentrRepository.GetAll();
+            List<Student> students = baseRepository.GetAll();
             if (students.Count == 0)
             {
                 return NotFound();
@@ -29,7 +29,7 @@ namespace UniversityAPI.Controllers
         [HttpGet("stdWithdept")]
         public IActionResult GetStudentsWithDept()
         {
-            List<Student> students = IStudentrRepository.GetStudentsWithDept();
+            List<Student> students = baseRepository.GetStudentsWithDept("Department");
             if (students.Count == 0)
             {
                 return NotFound();
@@ -51,7 +51,7 @@ namespace UniversityAPI.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
         {
-            Student studentbyID = IStudentrRepository.GetById(id);
+            Student studentbyID = baseRepository.GetBy(s=>s.Id==id);
             if (studentbyID == null)
             {
                 return NotFound();
@@ -62,7 +62,7 @@ namespace UniversityAPI.Controllers
         [HttpGet("{name:alpha}")]
         public IActionResult GetByName(string name)
         {
-            Student studentbyName= IStudentrRepository.GetByName(name);
+            Student studentbyName= baseRepository.GetBy(s=>s.Name==name);
             if (studentbyName == null)
             {
                 return NotFound();
@@ -72,24 +72,24 @@ namespace UniversityAPI.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            IStudentrRepository.Delete(id);
-            IStudentrRepository.Save();
+            baseRepository.Delete(s => s.Id == id);
+            baseRepository.Save();
             return Ok("deleted Successfully");
         }
         [HttpPost]
         public IActionResult Add(Student student)
         {
             if (student == null) return BadRequest();
-            IStudentrRepository.Add(student);
-            IStudentrRepository.Save();
+            baseRepository.Add(student);
+            baseRepository.Save();
             return CreatedAtAction(nameof(GetById),new {id=student.Id},new {message="Created Successfully"});
         }
         [HttpPut]
         public IActionResult Update(Student student)
         {
             if(student == null) return BadRequest();
-            IStudentrRepository.Update(student);
-            IStudentrRepository.Save();
+            baseRepository.Update(student);
+            baseRepository.Save();
             return Ok("Updated Successfully");
         }
 
