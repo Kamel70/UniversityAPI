@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using UniversityAPI.Filters;
@@ -26,6 +27,8 @@ namespace UniversityAPI
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("udb"));
             });
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<UniversityContext>();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniversityAPI.Models
 {
-    public class UniversityContext: DbContext
+    public class UniversityContext: IdentityDbContext<ApplicationUser>
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Department> Departments { get; set; }
