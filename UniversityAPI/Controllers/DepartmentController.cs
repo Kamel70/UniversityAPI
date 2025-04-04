@@ -11,15 +11,15 @@ namespace UniversityAPI.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        public IDepartmentRepository departmentRepository { get; }
-        public DepartmentController(IDepartmentRepository _departmentRepository)
+        public IBaseRepository<Department> baseRepository;
+        public DepartmentController(IBaseRepository<Department> baseRepository)
         {
-            departmentRepository = _departmentRepository;
+            this.baseRepository = baseRepository;
         }
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Department> departments = departmentRepository.GetAll();
+            List<Department> departments = baseRepository.GetAll();
             if (departments.Count == 0)
             {
                 return NotFound();
@@ -30,7 +30,7 @@ namespace UniversityAPI.Controllers
         [TypeFilter(typeof(ResponseHeaderFilter))]
         public IActionResult GetAllWithStudents()
         {
-            List<Department> departments = departmentRepository.GetAllWithStudents();
+            List<Department> departments = baseRepository.GetStudentsWithDept("Students");
             if (departments.Count == 0)
             {
                 return NotFound();
@@ -62,8 +62,8 @@ namespace UniversityAPI.Controllers
             Department newDept=new Department();
             newDept.Name = name;
             newDept.Location = "Egypt";
-            departmentRepository.Add(newDept);
-            departmentRepository.Save();
+            baseRepository.Add(newDept);
+            baseRepository.Save();
             return Ok("Department Added Successfully");
         }
 
