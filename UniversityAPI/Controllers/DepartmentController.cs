@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityAPI.DTO;
 using UniversityAPI.Filters;
@@ -28,6 +29,7 @@ namespace UniversityAPI.Controllers
         }
         [HttpGet("ds")]
         [TypeFilter(typeof(ResponseHeaderFilter))]
+        [Authorize]
         public IActionResult GetAllWithStudents()
         {
             List<Department> departments = baseRepository.GetDeptsWithStudents("Students");
