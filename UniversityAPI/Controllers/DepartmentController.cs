@@ -83,6 +83,18 @@ namespace UniversityAPI.Controllers
             return Ok("Department Added Successfully");
         }
 
+        [HttpPut]
+        public IActionResult Edit(DeptIdAndNameAndLocationDTO department)
+        {
+            Department dept = new Department();
+            dept.Id = department.Id;
+            dept.Name = department.Name;
+            dept.Location = department.Location;
+            baseRepository.Update(dept);
+            baseRepository.Save();
+            return Ok("Updated Successfully");
+        }
+
 
     }
 }
