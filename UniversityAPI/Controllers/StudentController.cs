@@ -72,9 +72,14 @@ namespace UniversityAPI.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            baseRepository.Delete(s => s.Id == id);
-            baseRepository.Save();
-            return Ok("deleted Successfully");
+            Student std = baseRepository.GetBy(s => s.Id == id);
+            if (std != null)
+            {
+                baseRepository.Delete(s => s.Id == id);
+                baseRepository.Save();
+                return Ok("Deleted Successfully");
+            }
+            return BadRequest("Not Found");
         }
         [HttpPost]
         public IActionResult Add(Student student)

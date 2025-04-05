@@ -95,6 +95,19 @@ namespace UniversityAPI.Controllers
             return Ok("Updated Successfully");
         }
 
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            Department dept=baseRepository.GetBy(d=>d.Id==id);
+            if (dept != null)
+            {
+                baseRepository.Delete(d => d.Id == id);
+                baseRepository.Save();
+                return Ok("Deleted Successfully");
+            }
+            return BadRequest("Not Found");
+        }
+
 
     }
 }
