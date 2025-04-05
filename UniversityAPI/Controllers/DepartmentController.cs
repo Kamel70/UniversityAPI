@@ -70,14 +70,16 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPost()]
-        [ValidateLocationAttribute("location", "usa", "eg")]
         public IActionResult Add([FromBody] DeptNameAndLocDTO dept)
         {
-            //Department newDept = new Department();
-            //newDept.Name = dept.Name;
-            //newDept.Location = dept.Location;
-            //departmentRepository.Add(newDept);
-            //departmentRepository.Save();
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+            Department newDept = new Department();
+            newDept.Name = dept.Name;
+            newDept.Location = dept.Location;
+            baseRepository.Add(newDept);
+            baseRepository.Save();
             return Ok("Department Added Successfully");
         }
 

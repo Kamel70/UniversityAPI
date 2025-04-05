@@ -73,7 +73,7 @@ namespace UniversityAPI
                 {
                     Version = "v1",
                     Title = "ASP.NET 5 Web API",
-                    Description = " ITI Projrcy"
+                    Description = "Security"
                 });
                 // To Enable authorization using Swagger (JWT)    
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
