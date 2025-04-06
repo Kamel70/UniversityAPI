@@ -89,5 +89,35 @@ namespace UniversityAPI.Controllers
             }
             return BadRequest(ModelState);
         }
+
+        [HttpPost("Register/Admin")]
+        public async Task<IActionResult> RegisterAdmin(RegisterDTO register)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = new ApplicationUser();
+                user.Email = register.Email;
+                user.UserName = register.UserName;
+                user.PhoneNumber = register.Phone;
+                user.Image = register.Image;
+                user.Age = register.Age;
+                user.Address = register.Address;
+                IdentityResult result = await userManager.CreateAsync(user, register.Password);
+                if (result.Succeeded)
+                {
+                    IdentityResult role = await userManager.AddToRoleAsync(user,"Admin");
+                    if (role.Succeeded)
+                    {
+                        return Ok("Registered Successfully");
+                    }
+                    
+                }
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }
