@@ -80,7 +80,11 @@ namespace UniversityAPI.Controllers
                 IdentityResult result =await userManager.CreateAsync(user,register.Password);
                 if (result.Succeeded)
                 {
-                    return Ok("Registered Successfully");
+                    IdentityResult role = await userManager.AddToRoleAsync(user, "Student");
+                    if (role.Succeeded)
+                    {
+                        return Ok("Registered Successfully");
+                    }
                 }
                 foreach (var item in result.Errors)
                 {
