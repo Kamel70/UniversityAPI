@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace UniversityAPI.Models
 {
@@ -14,6 +15,10 @@ namespace UniversityAPI.Models
         [ForeignKey("Department")]
         public int DeptId { get; set; }
         public Department Department { get; set; }
+        [ForeignKey("User")]
+        public string? UserID { get; set; }
+
+        public ApplicationUser? User { get; set; }
 
     }
 }

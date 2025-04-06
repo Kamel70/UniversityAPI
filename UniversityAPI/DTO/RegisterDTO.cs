@@ -1,4 +1,6 @@
-﻿using Azure.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+using Azure.Identity;
+using UniversityAPI.Filters;
 
 namespace UniversityAPI.DTO
 {
@@ -12,6 +14,9 @@ namespace UniversityAPI.DTO
         public string Address { get; set; }
         public string Image {  get; set; }
         public string Phone { get; set; }
+        [Required]
+        [ValidateRole("Admin", "HR")]
+        public string role { get; set; }
 
     }
 }

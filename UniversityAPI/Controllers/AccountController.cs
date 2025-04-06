@@ -65,6 +65,35 @@ namespace UniversityAPI.Controllers
             return Ok();
         }
 
+        //[HttpPost("Register")]
+        //public async Task<IActionResult> Register(RegisterDTO register)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        ApplicationUser user = new ApplicationUser();
+        //        user.Email = register.Email;
+        //        user.UserName = register.UserName;
+        //        user.PhoneNumber = register.Phone;
+        //        user.Image = register.Image;
+        //        user.Age = register.Age;
+        //        user.Address = register.Address;
+        //        IdentityResult result =await userManager.CreateAsync(user,register.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            IdentityResult role = await userManager.AddToRoleAsync(user, "Student");
+        //            if (role.Succeeded)
+        //            {
+        //                return Ok("Registered Successfully");
+        //            }
+        //        }
+        //        foreach (var item in result.Errors)
+        //        {
+        //            ModelState.AddModelError("",item.Description);
+        //        }
+        //    }
+        //    return BadRequest(ModelState);
+        //}
+
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDTO register)
         {
@@ -77,36 +106,7 @@ namespace UniversityAPI.Controllers
                 user.Image = register.Image;
                 user.Age = register.Age;
                 user.Address = register.Address;
-                IdentityResult result =await userManager.CreateAsync(user,register.Password);
-                if (result.Succeeded)
-                {
-                    IdentityResult role = await userManager.AddToRoleAsync(user, "Student");
-                    if (role.Succeeded)
-                    {
-                        return Ok("Registered Successfully");
-                    }
-                }
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError("",item.Description);
-                }
-            }
-            return BadRequest(ModelState);
-        }
-
-        [HttpPost("Register/Admin")]
-        public async Task<IActionResult> RegisterAdmin(RegisterWithRoleDTO register)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = new ApplicationUser();
-                user.Email = register.Register.Email;
-                user.UserName = register.Register.UserName;
-                user.PhoneNumber = register.Register.Phone;
-                user.Image = register.Register.Image;
-                user.Age = register.Register.Age;
-                user.Address = register.Register.Address;
-                IdentityResult result = await userManager.CreateAsync(user, register.Register.Password);
+                IdentityResult result = await userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
                     IdentityResult role = await userManager.AddToRoleAsync(user,register.role);
