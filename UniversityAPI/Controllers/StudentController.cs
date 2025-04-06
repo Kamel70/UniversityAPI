@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using UniversityAPI.DTO;
 using UniversityAPI.Models;
 using UniversityAPI.Repository;
@@ -11,9 +15,11 @@ namespace UniversityAPI.Controllers
     public class StudentController : ControllerBase
     {
         IBaseRepository<Student> baseRepository;
-        public StudentController(IBaseRepository<Student> _baseRepository)
+        UserManager<ApplicationUser> userManager;
+        public StudentController(IBaseRepository<Student> _baseRepository, UserManager<ApplicationUser> userManager)
         {
             baseRepository = _baseRepository;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -82,12 +88,43 @@ namespace UniversityAPI.Controllers
             return BadRequest("Not Found");
         }
         [HttpPost]
-        public IActionResult Add(Student student)
+        public async Task<IActionResult> Add(StudentDetailsAndUserDetailsDTO std)
         {
-            if (student == null) return BadRequest();
-            baseRepository.Add(student);
-            baseRepository.Save();
-            return CreatedAtAction(nameof(GetById),new {id=student.Id},new {message="Created Successfully"});
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = new ApplicationUser();
+                user.Email = std.Email;
+                user.UserName = std.UserName;
+                user.PhoneNumber = std.PhoneNumber;
+                user.Image = std.Image;
+                user.Age = std.Age;
+                user.Address = std.Address;
+                IdentityResult id = await userManager.CreateAsync(user);
+                if (id.Succeeded)
+                {
+                    IdentityResult role = await userManager.AddToRoleAsync(user, "Student");
+                    if (role.Succeeded)
+                    {
+                        Student student = new Student();
+                        student.Name = std.Name;
+                        student.Address = std.Address;
+                        student.Image = std.Image;
+                        student.PhoneNumber = std.PhoneNumber;
+                        student.Age = std.Age;
+                        student.BOD = std.BOD;
+                        student.DeptId = std.DeptID;
+                        student.UserID = user.Id;
+                        baseRepository.Add(student);
+                        baseRepository.Save();
+                        return CreatedAtAction(nameof(GetById), new { id = student.Id }, new { message = "Created Successfully" });
+                    }
+                }
+                foreach (var item in id.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
+            }
+            return BadRequest(ModelState);
         }
         [HttpPut]
         public IActionResult Update(Student student)
