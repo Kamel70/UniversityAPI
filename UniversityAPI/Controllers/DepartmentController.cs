@@ -18,6 +18,7 @@ namespace UniversityAPI.Controllers
             this.baseRepository = baseRepository;
         }
         [HttpGet]
+        [Authorize(Roles ="HR")]
         public IActionResult GetAll()
         {
             List<Department> departments = baseRepository.GetAll();
@@ -29,7 +30,7 @@ namespace UniversityAPI.Controllers
         }
         [HttpGet("ds")]
         [TypeFilter(typeof(ResponseHeaderFilter))]
-        [Authorize]
+        [Authorize(Roles ="HR")]
         public IActionResult GetAllWithStudents()
         {
             List<Department> departments = baseRepository.GetDeptsWithStudents("Students");
@@ -59,6 +60,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPost("Egypt")]
+        [Authorize("Admin")]
         public IActionResult AddLocEgypt(string name)
         {
             Department newDept=new Department();
@@ -70,6 +72,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPost()]
+        [Authorize("Admin")]
         public IActionResult Add([FromBody] DeptNameAndLocDTO dept)
         {
             if (!ModelState.IsValid) {
@@ -84,6 +87,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles ="HR")]
         public IActionResult Edit(DeptIdAndNameAndLocationDTO department)
         {
             Department dept = new Department();
@@ -96,6 +100,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles ="Admin")]
         public IActionResult Delete(int id)
         {
             Department dept=baseRepository.GetBy(d=>d.Id==id);

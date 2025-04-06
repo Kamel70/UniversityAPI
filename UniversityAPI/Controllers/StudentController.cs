@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="HR")]
         public IActionResult GetAll()
         {
             List<Student> students = baseRepository.GetAll();
@@ -33,6 +35,7 @@ namespace UniversityAPI.Controllers
             return Ok(students);
         }
         [HttpGet("stdWithdept")]
+        [Authorize(Roles ="HR")]
         public IActionResult GetStudentsWithDept()
         {
             List<Student> students = baseRepository.GetStudentsWithDept("Department");
@@ -55,6 +58,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles ="HR")]
         public IActionResult GetById(int id)
         {
             Student studentbyID = baseRepository.GetBy(s=>s.Id==id);
@@ -66,6 +70,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpGet("{name:alpha}")]
+        [Authorize(Roles = "HR")]
         public IActionResult GetByName(string name)
         {
             Student studentbyName= baseRepository.GetBy(s=>s.Name==name);
@@ -76,6 +81,7 @@ namespace UniversityAPI.Controllers
             return Ok(new { message = $"{name} is Exist", student = studentbyName });
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             Student std = baseRepository.GetBy(s => s.Id == id);
@@ -88,6 +94,7 @@ namespace UniversityAPI.Controllers
             return BadRequest("Not Found");
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(StudentDetailsAndUserDetailsDTO std)
         {
             if (ModelState.IsValid)
@@ -99,7 +106,7 @@ namespace UniversityAPI.Controllers
                 user.Image = std.Image;
                 user.Age = std.Age;
                 user.Address = std.Address;
-                IdentityResult id = await userManager.CreateAsync(user);
+                IdentityResult id = await userManager.CreateAsync(user,std.Password);
                 if (id.Succeeded)
                 {
                     IdentityResult role = await userManager.AddToRoleAsync(user, "Student");
@@ -127,6 +134,7 @@ namespace UniversityAPI.Controllers
             return BadRequest(ModelState);
         }
         [HttpPut]
+        [Authorize(Roles = "HR")]
         public IActionResult Update(Student student)
         {
             if(student == null) return BadRequest();
