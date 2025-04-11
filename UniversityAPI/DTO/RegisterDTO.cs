@@ -7,7 +7,6 @@ namespace UniversityAPI.DTO
     public class RegisterDTO
     {
         [Required]
-        [Display(Name ="User Name")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -18,7 +17,6 @@ namespace UniversityAPI.DTO
         [Required]
         [Compare("Password", ErrorMessage = "Confirm Password Must Match Password")]
         [DataType(DataType.Password)]
-        [Display(Name ="Confirmed Password")]
         public string ConfirmedPassword { get; set; }
         [Required]
         public int Age {  get; set; }

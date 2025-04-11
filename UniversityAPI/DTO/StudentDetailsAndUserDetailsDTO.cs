@@ -8,7 +8,6 @@ namespace UniversityAPI.DTO
         [Required]
         public string Name { get; set; }
         [Required]
-        [Display(Name = "User Name")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -27,13 +26,10 @@ namespace UniversityAPI.DTO
         [Required]
         public string Address { get; set; }
         [Required]
-        [Display(Name="Phone Number")]
         public string PhoneNumber { get; set; }
         [Required]
-        [Display(Name="Birth Of Date")]
         public string BOD { get; set; }
         [Required]
-        [Display(Name="Department ID")]
         public int DeptID { get; set; }
 
     }

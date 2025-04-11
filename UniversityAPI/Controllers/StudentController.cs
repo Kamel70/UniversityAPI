@@ -150,25 +150,14 @@ namespace UniversityAPI.Controllers
         {
             Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             string id = claim.Value;
-            var student =baseRepository.GetBy(s=>s.UserID==id);
+            var student =baseRepository.GetStudentDetailsWithDept("Department",s =>s.UserID==id);
             if (student == null) return NotFound();
-            List<Student> students = baseRepository.GetStudentsWithDept("Department");
-            if (students.Count == 0)
-            {
-                return NotFound();
-            }
-
-            List<StudentWithDeptNameDTO> data = new List<StudentWithDeptNameDTO>();
-            foreach (var std in students)
-            {
-                StudentWithDeptNameDTO studentWithDeptNameDTO = new StudentWithDeptNameDTO();
-                studentWithDeptNameDTO.Name = std.Name;
-                studentWithDeptNameDTO.DepartmentName = std.Department.Name;
-                studentWithDeptNameDTO.Age = std.Age;
-                studentWithDeptNameDTO.Address = std.Address;
-                data.Add(studentWithDeptNameDTO);
-            }
-            return Ok();
+            StudentWithDeptNameDTO data = new StudentWithDeptNameDTO();
+            data.Name = student.Name;
+            data.DepartmentName = student.Department.Name;
+            data.Age = student.Age;
+            data.Address = student.Address;
+            return Ok(data);
         }
 
     }

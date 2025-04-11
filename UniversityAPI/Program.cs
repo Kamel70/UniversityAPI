@@ -25,8 +25,6 @@ namespace UniversityAPI
 
             builder.Services.AddControllers();
             
-            builder.Services.AddScoped<IStudentrRepository, StudentRepository>();
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddDbContext<UniversityContext>(options =>
             {

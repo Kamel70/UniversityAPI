@@ -5,7 +5,6 @@ namespace UniversityAPI.DTO
     public class LoginDTO
     {
         [Required]
-        [Display(Name ="User Name")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]
