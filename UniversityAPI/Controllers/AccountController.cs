@@ -28,7 +28,7 @@ namespace UniversityAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user=await userManager.FindByNameAsync(login.Name);
+                ApplicationUser user=await userManager.FindByNameAsync(login.UserName);
                 if (user != null)
                 {
                     bool passCheck=await userManager.CheckPasswordAsync(user,login.Password);
@@ -43,11 +43,11 @@ namespace UniversityAPI.Controllers
                         {
                             claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
                         }
-                        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT : SecurityKey"]));
+                        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sdfljsdlfj9o4oieurwew//cv??fdssdrer///???430958dlsjfkjdssdfl||dsf"));
                         SigningCredentials signingCredentials=new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
                         JwtSecurityToken jwt = new JwtSecurityToken(
-                            issuer: configuration["JWT : IssuerIP"],
-                            audience: configuration["JWT : AudienceIP"],
+                            issuer: "http://localhost:5115/",
+                            audience: "http://localhost:4200/",
                             expires:DateTime.Now.AddDays(1),
                             claims:claims,
                             signingCredentials:signingCredentials

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -141,6 +142,33 @@ namespace UniversityAPI.Controllers
             baseRepository.Update(student);
             baseRepository.Save();
             return Ok("Updated Successfully");
+        }
+
+        [HttpGet("MyDetails")]
+        [Authorize(Roles = "Student")]
+        public IActionResult GetMyDetails()
+        {
+            Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string id = claim.Value;
+            var student =baseRepository.GetBy(s=>s.UserID==id);
+            if (student == null) return NotFound();
+            List<Student> students = baseRepository.GetStudentsWithDept("Department");
+            if (students.Count == 0)
+            {
+                return NotFound();
+            }
+
+            List<StudentWithDeptNameDTO> data = new List<StudentWithDeptNameDTO>();
+            foreach (var std in students)
+            {
+                StudentWithDeptNameDTO studentWithDeptNameDTO = new StudentWithDeptNameDTO();
+                studentWithDeptNameDTO.Name = std.Name;
+                studentWithDeptNameDTO.DepartmentName = std.Department.Name;
+                studentWithDeptNameDTO.Age = std.Age;
+                studentWithDeptNameDTO.Address = std.Address;
+                data.Add(studentWithDeptNameDTO);
+            }
+            return Ok();
         }
 
     }
