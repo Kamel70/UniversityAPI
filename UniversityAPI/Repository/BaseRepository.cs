@@ -37,6 +37,11 @@ namespace UniversityAPI.Repository
             return universityContext.Set<T>().Include(studs).ToList();
         }
 
+        public T GetStudentDetailsWithDept(string dept, Expression<Func<T, bool>> fun)
+        {
+            return universityContext.Set<T>().Include(dept).FirstOrDefault(fun);
+        }
+
         public List<T> GetStudentsWithDept(string depts)
         {
             return universityContext.Set<T>().Include(depts).ToList();

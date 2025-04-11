@@ -13,7 +13,7 @@ namespace UniversityAPI.Repository
         public void Save();
         public List<T> GetDeptsWithStudents(string studs);
         public List<T> GetStudentsWithDept(string dept);
-        public List<T> GetStudentDetailsWithDept(string dept,Expression<Func<T, bool>> fun);
+        public T GetStudentDetailsWithDept(string dept,Expression<Func<T, bool>> fun);
 
 
     }
