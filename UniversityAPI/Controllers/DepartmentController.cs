@@ -60,7 +60,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPost("Egypt")]
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddLocEgypt(string name)
         {
             Department newDept=new Department();
@@ -72,7 +72,7 @@ namespace UniversityAPI.Controllers
         }
 
         [HttpPost()]
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         public IActionResult Add([FromBody] DeptNameAndLocDTO dept)
         {
             if (!ModelState.IsValid) {
